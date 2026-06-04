@@ -1,10 +1,9 @@
-import {Injectable, Service, signal} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 
-@Service()
 export class Auth
 {
 

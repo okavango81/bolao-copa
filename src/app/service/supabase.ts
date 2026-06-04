@@ -1,4 +1,4 @@
-import {Service, Injectable, Signal, signal} from '@angular/core';
+import {Injectable, Signal, signal} from '@angular/core';
 import {createClient, SupabaseClient} from '@supabase/supabase-js';
 import {environment} from '../../environments/environment';
 
@@ -14,7 +14,6 @@ export interface Guess
 
 @Injectable({providedIn: 'root'})
 
-@Service()
 export class Supabase
 {
   // lista reativa (Signal) para guardar as apostas que vierem da nuvem
