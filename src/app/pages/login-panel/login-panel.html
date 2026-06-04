@@ -1,1 +1,39 @@
-<p>login-panel works!</p>
+<div class="login-container">
+  <h2>🔐 Painel de Controlo</h2>
+
+  <p class="description">
+    Insira a password administrativa para atualizar os palpites do bolão.
+  </p>
+
+  <div class="password-container">
+    <input
+      #passwordInput
+      autocomplete="new-password"
+      [type]="showPassword() ? 'text' : 'password'"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+      placeholder="Digite a senha"
+    >
+
+    <button
+      type="button"
+      class="toggle-password"
+      (click)="showPassword.set(!showPassword())">
+
+    <span class="material-icons">
+      {{ showPassword() ? 'visibility_off' : 'visibility' }}
+    </span>
+
+    </button>
+  </div>
+
+  <button (click)="enterThePanel()">
+    Entrar no Painel
+  </button>
+
+  @if (errorMessage()) {
+    <p class="error-message">
+      {{ errorMessage() }}
+    </p>
+  }
+</div>
