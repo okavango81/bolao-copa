@@ -1,52 +1,88 @@
-<div class="container">
+<div class = "container">
   <header>
-    <h1>🏆 Grande Bolão da Copa</h1>
+    <h1>🏆 BOLÃO DO EDBET</h1>
     <p>Acompanhe os palpites e os vencedores em tempo real</p>
   </header>
 
-  <div class="selector-box">
-    <label for="jogo-select">Escolha o Confronto:</label>
-    <select id="jogo-select" (change)="onJogoChange($event)">
+  <div class = "selector-box">
+    <label for = "jogo-select">Escolha o Confronto:</label>
+
+    <select id = "jogo-select" (change) = "onJogoChange($event)">
       @for (j of jogos(); track j.id) {
-        <option [value]="j.id" [selected]="j.id === jogoAtivo()?.id">
+        <option [value] = "j.id" [selected] = "j.id === jogoAtivo()?.id">
           {{ j.team_a }} x {{ j.team_b }}
         </option>
       }
     </select>
   </div>
 
-  <div class="placar-oficial-card">
-    @if (jogoAtivo(); as jogo) {
-      <div class="times-placar">
-        <span class="time">{{ jogo.team_a }}</span>
+  @if (jogoAtivo(); as jogo) {
 
-        <div class="gols-container">
-          @if (jogo.goals_team_a !== null && jogo.goals_team_b !== null) {
-            <span class="gols-numero">{{ jogo.goals_team_a }}</span>
-            <span class="versus">-</span>
-            <span class="gols-numero">{{ jogo.goals_team_b }}</span>
-          } @else {
-            <span class="badge-andamento">Jogo em Andamento 🕒</span>
-          }
+    <div class = "placar-oficial-card">
+
+      @if (jogo.goals_team_a !== null && jogo.goals_team_b !== null) {
+
+        <div class = "placar-final">
+
+          <span class = "sigla-time">
+            {{ abreviarTime(jogo.team_a) }}
+          </span>
+
+          <span class = "gols-numero">
+            {{ jogo.goals_team_a }}
+          </span>
+
+          <span class = "versus">-</span>
+
+          <span class = "gols-numero">
+            {{ jogo.goals_team_b }}
+          </span>
+
+          <span class = "sigla-time">
+            {{ abreviarTime(jogo.team_b) }}
+          </span>
+
         </div>
 
-        <span class="time">{{ jogo.team_b }}</span>
-      </div>
-    }
-  </div>
+      } @else {
 
-  <div class="ganhadores-card">
-    <h2>🎯 Ganhadores do Placar Cheio</h2>
-    <div class="lista-ganhadores">
+        <div class = "placar-andamento">
+
+          <div class = "confronto-resumo">
+            {{ abreviarTime(jogo.team_a) }}
+            x
+            {{ abreviarTime(jogo.team_b) }}
+          </div>
+
+          <div class = "badge-andamento">
+            🕒 Jogo ainda não finalizado
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+  <div class = "ganhadores-card">
+    <h2>🎯 Quem acertou o placar?</h2>
+
+    <div class = "lista-ganhadores">
       @for (g of ganhadores(); track g.id) {
-        <span class="ganhador-badge">⭐ {{ g.bettor_name }}</span>
+        <span class = "ganhador-badge">
+          ⭐ {{ g.bettor_name }}
+        </span>
       } @empty {
-        <p class="nenhum">Ninguém acertou o placar em cheio ainda... 😭</p>
+        <p class = "nenhum">
+          Ninguém acertou o placar ainda... 😭
+        </p>
       }
     </div>
   </div>
 
-  <div class="table-container">
+  <div class = "table-container">
     <table>
       <thead>
       <tr>
@@ -54,19 +90,22 @@
         <th>Palpite</th>
       </tr>
       </thead>
+
       <tbody>
         @for (p of palpites(); track p.id) {
           <tr>
             <td>{{ p.bettor_name }}</td>
+
             <td>
-              <span class="placar-apostado">
+              <span class = "placar-apostado">
                 {{ p.goals_team_a }} x {{ p.goals_team_b }}
               </span>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="2" style="text-align: center; color: #94a3b8; font-style: italic;">
+            <td colspan = "2"
+                style = "text-align:center;color:#94a3b8;font-style:italic;">
               Nenhum palpite registrado para este jogo.
             </td>
           </tr>
@@ -74,4 +113,5 @@
       </tbody>
     </table>
   </div>
+
 </div>

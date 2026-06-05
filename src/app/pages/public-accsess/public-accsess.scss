@@ -1,258 +1,407 @@
 :host
 {
   display: block;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   min-height: 100vh;
+  padding: 1.5rem 1rem;
+
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  background: linear-gradient(
+      135deg,
+      #0f172a 0%,
+      #1e293b 100%
+  );
+
   color: #f8fafc;
-  padding: 2rem 1rem;
+}
+
+*,
+*::before,
+*::after
+{
+  box-sizing: border-box;
 }
 
 .container
 {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
 }
+
+/* =========================
+   HEADER
+   ========================= */
 
 header
 {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 
   h1
   {
-    font-size: 2.5rem;
+    margin: 0 0 .5rem;
+
     color: #38bdf8;
-    margin-bottom: 0.5rem;
+
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
   }
 
   p
   {
+    margin: 0;
     color: #94a3b8;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
+
+/* =========================
+   SELETOR
+   ========================= */
 
 .selector-box
 {
   background: #1e293b;
-  padding: 1.5rem;
-  border-radius: 12px;
+
   border: 1px solid #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  border-radius: 12px;
+
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
 
   label
   {
+    display: block;
+
+    margin-bottom: .75rem;
+
     color: #94a3b8;
-    font-size: 0.9rem;
+    font-size: .95rem;
     font-weight: 600;
   }
 
   select
   {
-    background: #0f172a;
-    border: 1px solid #475569;
-    color: #f8fafc;
-    padding: 0.75rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-    cursor: pointer;
-    transition: border-color 0.2s;
+    width: 100%;
 
-    &:focus
-    {
-      border-color: #38bdf8;
-    }
+    background: #0f172a;
+    color: #f8fafc;
+
+    border: 1px solid #475569;
+    border-radius: 10px;
+
+    padding: .85rem 1rem;
+
+    font-size: 1rem;
+
+    outline: none;
+  }
+
+  select:focus
+  {
+    border-color: #38bdf8;
   }
 }
 
-// 🏆 A CAIXA DE GANHADORES BRILHANTE
-// 🏆 CARD DE GANHADORES BRILHANTE (ROXO COM TEXTO CLARO)
+/* =========================
+   PLACAR OFICIAL
+   ========================= */
+
+.placar-oficial-card
+{
+  background: #1e293b;
+
+  border: 1px solid #334155;
+  border-radius: 12px;
+
+  padding: 2rem 1.5rem;
+
+  margin-bottom: 1.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+.placar-andamento
+{
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.confronto-resumo
+{
+  color: #38bdf8;
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  text-align: center;
+}
+
+.badge-andamento
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: .7rem 1.2rem;
+
+  border-radius: 999px;
+
+  background: rgba(234, 179, 8, .15);
+  border: 1px solid rgba(234, 179, 8, .3);
+
+  color: #eab308;
+
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.placar-final
+{
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: .75rem;
+
+  width: 100%;
+}
+
+.sigla-time
+{
+  color: #38bdf8;
+
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.gols-numero
+{
+  min-width: 52px;
+
+  background: #0f172a;
+
+  border: 1px solid #475569;
+  border-radius: 10px;
+
+  padding: .35rem .9rem;
+
+  color: #38bdf8;
+
+  text-align: center;
+
+  font-size: 1.9rem;
+  font-weight: bold;
+}
+
+.versus
+{
+  color: #64748b;
+
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* =========================
+   GANHADORES
+   ========================= */
+
 .ganhadores-card
 {
-  background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
-  border: 2px solid #a855f7;
-  border-radius: 16px;
-  padding: 2rem;
+  background: linear-gradient(
+      135deg,
+      #2e1065 0%,
+      #3b0764 100%
+  );
+
+  border: 1px solid rgba(168, 85, 247, .5);
+  border-radius: 12px;
+
+  padding: 1.5rem;
+
   text-align: center;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2);
+
+  margin-bottom: 1.5rem;
 
   h2
   {
-    color: #f472b6; // Rosa bem visível no escuro
-    font-size: 1.5rem;
     margin-top: 0;
-    margin-bottom: 1.5rem;
-  }
+    margin-bottom: 1rem;
 
-  .ganhador-badge
-  {
-    display: inline-block;
-    background: rgba(168, 85, 247, 0.3);
-    color: #e9d5ff; // Texto lilás bem clarinho para dar leitura
-    padding: 0.6rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border: 1px solid rgba(168, 85, 247, 0.5);
-    margin: 0.5rem;
-  }
-
-  .nenhum
-  {
-    color: #94a3b8; // Cinza claro visível
-    font-style: italic;
-    margin: 0;
-    font-size: 1.1rem;
+    color: #f472b6;
+    font-size: 1.4rem;
   }
 }
+
+.lista-ganhadores
+{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: .5rem;
+}
+
+.ganhador-badge
+{
+  display: inline-block;
+
+  padding: .5rem 1rem;
+
+  border-radius: 999px;
+
+  background: rgba(168, 85, 247, .2);
+  border: 1px solid rgba(168, 85, 247, .35);
+
+  color: #e9d5ff;
+  font-weight: 600;
+}
+
+.nenhum
+{
+  margin: 0;
+
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+/* =========================
+   TABELA
+   ========================= */
 
 .table-container
 {
   background: #1e293b;
-  border-radius: 12px;
+
   border: 1px solid #334155;
+  border-radius: 12px;
+
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 table
 {
   width: 100%;
+
   border-collapse: collapse;
-  text-align: left;
-
-  th
-  {
-    background: #0f172a;
-    color: #38bdf8;
-    padding: 1rem 1.5rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #334155;
-  }
-
-  td
-  {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #334155;
-    color: #cbd5e1;
-    font-size: 1rem;
-  }
-
-  tr:last-child td
-  {
-    border-bottom: none;
-  }
-
-  tr:hover td
-  {
-    background: rgba(56, 189, 248, 0.03);
-    color: #fff;
-  }
-
-  .placar-apostado
-  {
-    font-weight: bold;
-    color: #34d399;
-    background: rgba(52, 211, 153, 0.1);
-    padding: 0.25rem 0.75rem;
-    border-radius: 6px;
-    display: inline-block;
-  }
+  table-layout: fixed;
 }
 
-// ⚽ NOVO CARD DE PLACAR REAL DO CONFRONTO
-.placar-oficial-card
+th
 {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 1.5rem 2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background: #0f172a;
 
-  .times-placar
+  color: #38bdf8;
+
+  padding: 1rem;
+
+  text-align: left;
+
+  font-size: .95rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+td
+{
+  padding: 1rem;
+
+  color: #cbd5e1;
+
+  border-top: 1px solid #334155;
+}
+
+tbody tr:hover td
+{
+  background: rgba(255, 255, 255, .03);
+}
+
+th:first-child,
+td:first-child
+{
+  width: 70%;
+}
+
+th:last-child,
+td:last-child
+{
+  width: 30%;
+  text-align: center;
+}
+
+.placar-apostado
+{
+  display: inline-block;
+
+  background: rgba(52, 211, 153, .12);
+
+  padding: .3rem .8rem;
+
+  border-radius: 6px;
+
+  color: #34d399;
+  font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVO
+   ========================= */
+
+@media (max-width: 768px)
+{
+  :host
   {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 500px;
-    margin: 0 auto;
+    padding: 1rem .75rem;
+  }
+
+  .container
+  {
+    max-width: 100%;
+  }
+
+  .confronto-resumo
+  {
+    font-size: 1.5rem;
+  }
+
+  .sigla-time
+  {
     font-size: 1.3rem;
-    font-weight: bold;
-  }
-
-  .time
-  {
-    color: #f8fafc;
-    flex: 1;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .gols-container
-  {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0 1rem;
-    min-width: 150px;
   }
 
   .gols-numero
   {
-    background: #0f172a;
-    color: #38bdf8;
-    font-size: 2rem;
-    padding: 0.2rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #475569;
-    min-width: 40px;
-    text-align: center;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
-
-  .versus
-  {
-    color: #64748b;
+    min-width: 42px;
     font-size: 1.5rem;
   }
 
   .badge-andamento
   {
-    background: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-    border: 1px solid rgba(234, 179, 8, 0.3);
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    animation: pulse 2s infinite;
+    width: 100%;
+    max-width: 260px;
   }
-}
 
-@keyframes pulse
-{
-  0%, 100%
+  th,
+  td
   {
-    transform: scale(1);
-  }
-  50%
-  {
-    transform: scale(1.03);
+    padding: .8rem;
   }
 }

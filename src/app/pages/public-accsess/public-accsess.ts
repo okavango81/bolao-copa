@@ -48,7 +48,7 @@
 //     }
 //   }
 // }
-import {Component, inject, computed, signal} from '@angular/core';
+import {Component, inject, computed} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Supabase} from '../../service/supabase';
 import {FormsModule} from '@angular/forms';
@@ -138,5 +138,10 @@ export class PublicAccsess
     {
       this.supabaseService.setActiveMatch(jogoSelecionado);
     }
+  }
+
+  abreviarTime(nome: string): string
+  {
+    return nome.substring(0, 3).toUpperCase();
   }
 }
