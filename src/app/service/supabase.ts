@@ -1,74 +1,151 @@
-import {Injectable, Signal, signal} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {createClient, SupabaseClient} from '@supabase/supabase-js';
 import {environment} from '../../environments/environment';
+
+export interface Match
+{
+  id: number;
+  team_a: string;
+  team_b: string;
+  goals_team_a: number | null;
+  goals_team_b: number | null;
+  created_at?: string;
+}
 
 export interface Guess
 {
   id?: number;
-  bettorName: string;
-  teamA: string;
-  teamB: string;
-  goalsTeamA: number;
-  goalsTeamB: number;
+  match_id: number;
+  bettor_name: string;
+  goals_team_a: number;
+  goals_team_b: number;
+  created_at?: string;
 }
 
 @Injectable({providedIn: 'root'})
-
 export class Supabase
 {
-  // lista reativa (Signal) para guardar as apostas que vierem da nuvem
-  listOfGuesss = signal<Guess[]>([]);
-
-  // conexão supabase
-  private supabase: SupabaseClient =
-    createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
-    );
+  // Signals para gerenciar o estado globalmente
+  matches = signal<Match[]>([]);
+  activeMatch = signal<Match | null>(null);
+  guesses = signal<Guess[]>([]);
+  private supabase: SupabaseClient;
 
   constructor()
   {
-    // Sempre que o app abrir, ele já busca os palpites automaticamente
-    this.findGuess();
+    this.supabase = createClient(
+      'https://xmbstkxuisgscaxkypbs.supabase.co', // <-- Substitua pelo seu Project URL real
+      'sb_publishable_FfUdzax2m1Z2Dlxp8NrioA_sn2JmakQ' // <-- Substitua pela sua API anon key real
+    );
+    this.loadMatches();
   }
 
-  // AÇÃO 1: Ir na nuvem e pegar todos os palpites salvos
-  async findGuess()
+  // --- MÉTODOS DE JOGOS ---
+
+  // Carrega todos os jogos cadastrados
+  async loadMatches()
+  {
+    const {data, error} = await this.supabase
+      .from('matches')
+      .select('*')
+      .order('created_at', {ascending: false}); // O mais recente primeiro
+
+    if (!error && data)
+    {
+      this.matches.set(data);
+      // Se houver jogos e nenhum estiver ativo ainda, define o último como padrão
+      if (data.length > 0 && !this.activeMatch())
+      {
+        this.setActiveMatch(data[0]);
+      }
+    }
+  }
+
+  // Define qual jogo está sendo visualizado na tela e carrega os palpites dele
+  setActiveMatch(match: Match)
+  {
+    this.activeMatch.set(match);
+    this.loadGuessesForMatch(match.id);
+  }
+
+  // Cadastra um novo jogo (Admin)
+  async createMatch(teamA: string, teamB: string)
+  {
+    const {error} = await this.supabase
+      .from('matches')
+      .insert([{team_a: teamA, team_b: teamB}]);
+
+    if (!error)
+    {
+      await this.loadMatches(); // Atualiza a lista de jogos
+    }
+  }
+
+  // Atualiza o placar final do jogo (Admin)
+  async updateMatchScore(matchId: number, goalsA: number, goalsB: number)
+  {
+    const {error} = await this.supabase
+      .from('matches')
+      .update({goals_team_a: goalsA, goals_team_b: goalsB})
+      .eq('id', matchId);
+
+    if (!error)
+    {
+      await this.loadMatches();
+      // Atualiza o jogo ativo se for o caso
+      const currentActive = this.activeMatch();
+      if (currentActive && currentActive.id === matchId)
+      {
+        this.activeMatch.update(m => m ? {...m, goals_team_a: goalsA, goals_team_b: goalsB} : null);
+      }
+    }
+  }
+
+  // --- MÉTODOS DE PALPITES ---
+
+  // Busca palpites filtrados pelo ID do jogo ativo
+  async loadGuessesForMatch(matchId: number)
   {
     const {data, error} = await this.supabase
       .from('guesses')
       .select('*')
-      .order('id', {ascending: true});
+      .eq('match_id', matchId)
+      .order('created_at', {ascending: true});
 
-    if (error)
+    if (!error && data)
     {
-      console.error('Erro ao buscar dados do Supabase:', error.message);
-    } else if (data)
-    {
-      // Guarda o resultado dentro da lista reativa
-      this.listOfGuesss.set(data as Guess[]);
+      this.guesses.set(data);
     }
   }
 
-  // AÇÃO 2: Atualizar ou Inserir palpites que o Admin editou
-  async saveGuessesAdmin(editedGuesses: Guess[])
+  // Envia um palpite atrelado ao jogo ativo
+  // Envia um palpite atrelado a um jogo específico escolhido pelo Admin
+  async saveGuess(matchId: number, bettorName: string, goalsA: number, goalsB: number)
   {
-
-    // O Supabase é inteligente: o método 'upsert' salva se for novo ou atualiza se já existir
     const {error} = await this.supabase
       .from('guesses')
-      .upsert(editedGuesses);
+      .insert([{
+        match_id: matchId,
+        bettor_name: bettorName,
+        goals_team_a: goalsA,
+        goals_team_b: goalsB
+      }]);
 
-    if (error)
+    if (!error)
     {
-      alert('Erro ao salvar no banco de dados: ' + error.message);
-    } else
-    {
-      alert('Tudo salvo com sucesso no Supabase! 🎉');
-
-      // Recarrega a lista para garantir que está atualizada
-      this.findGuess();
+      // Se o palpite for do jogo que está aberto na tela atual, recarrega a lista
+      const currentActive = this.activeMatch();
+      if (currentActive && currentActive.id === matchId)
+      {
+        await this.loadGuessesForMatch(matchId);
+      }
     }
   }
 
+  // No seu serviço, mude o estado de autenticado para falso
+  logout()
+  {
+    // Se você usa uma chave no localStorage ou um Signal de login:
+    localStorage.removeItem('isAdminAuthenticated'); // ou o método que você usa para guardar a sessão
+  }
 }

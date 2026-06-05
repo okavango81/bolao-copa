@@ -36,7 +36,7 @@
     .toggle-password {
       position: absolute;
       top: 50%;
-      right: 12px;
+      right: 14px;
       transform: translateY(-50%);
 
       display: flex;
@@ -48,6 +48,7 @@
       background: transparent;
       cursor: pointer;
       width: auto;
+      color: #7e7e7e;
 
       &:hover {
         background: transparent;
@@ -72,7 +73,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: #2376d2;
     }
   }
 

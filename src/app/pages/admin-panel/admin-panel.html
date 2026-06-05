@@ -1,5 +1,84 @@
-<h3>Tela Administrativa</h3>
+<div class="admin-wrapper">
+  <nav class="navbar-admin">
+    <h1>Painel <span>Admin Bolão 🏆</span></h1>
+    <button class="btn-logout" (click)="efetuarLogout()">Sair / Trancar 🔒</button>
+  </nav>
 
-<button (click)="logout()">
-  Sair
-</button>
+  <div class="grid-admin">
+
+    <div class="card-form">
+      <h2>1. Cadastrar Novo Jogo</h2>
+      <div class="row-confronto">
+        <div class="form-group">
+          <label>Seleção A</label>
+          <input type="text" [(ngModel)]="novoTimeA" placeholder="Ex: Brasil" />
+        </div>
+
+        <div class="divisor-x">X</div>
+
+        <div class="form-group">
+          <label>Seleção B</label>
+          <input type="text" [(ngModel)]="novoTimeB" placeholder="Ex: Argentina" />
+        </div>
+      </div>
+      <button class="btn-primary btn-success" (click)="cadastrarJogo()">
+        Criar Confronto 🚀
+      </button>
+    </div>
+
+    <div class="card-form">
+      <h2>2. Gerenciar Jogos e Palpites</h2>
+
+      @for (jogo of jogos(); track jogo.id) {
+        <div class="item-jogo-admin">
+          <h3 class="titulo-confronto">
+            ⚽ Confronto: <span>{{ jogo.team_a }}</span> x <span>{{ jogo.team_b }}</span>
+          </h3>
+
+          <div class="admin-secao secao-placar">
+            <h4>Placar Oficial do Jogo:</h4>
+
+            <div class="row-inputs-btn">
+              <div class="form-group input-gols">
+                <input type="number" [(ngModel)]="getPlacarCampos(jogo.id, jogo.goals_team_a, jogo.goals_team_b).goalsA" placeholder="0" />
+              </div>
+              <span class="divisor-x-pequeno">x</span>
+              <div class="form-group input-gols">
+                <input type="number" [(ngModel)]="getPlacarCampos(jogo.id, jogo.goals_team_a, jogo.goals_team_b).goalsB" placeholder="0" />
+              </div>
+              <button class="btn-primary" (click)="salvarPlacarOficial(jogo.id)">
+                Salvar Placar
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-secao secao-palpite">
+            <h4>Lançar Palpite de Amigo:</h4>
+
+            <div class="row-inputs-btn flex-wrap">
+              <div class="form-group input-nome">
+                <input type="text" placeholder="Nome do Amigo" [(ngModel)]="getPalpiteCampos(jogo.id).nome" />
+              </div>
+
+              <div class="form-group input-gols">
+                <input type="number" [(ngModel)]="getPalpiteCampos(jogo.id).goalsA" placeholder="0" />
+              </div>
+              <span class="divisor-x-pequeno cor-indigo">x</span>
+              <div class="form-group input-gols">
+                <input type="number" [(ngModel)]="getPalpiteCampos(jogo.id).goalsB" placeholder="0" />
+              </div>
+
+              <button class="btn-primary btn-indigo" (click)="adicionarPalpiteAmigo(jogo.id)">
+                Gravar Palpite 💾
+              </button>
+            </div>
+          </div>
+
+        </div>
+      } @empty {
+        <p class="sem-jogos">Nenhum jogo cadastrado até o momento.</p>
+      }
+    </div>
+
+  </div>
+</div>

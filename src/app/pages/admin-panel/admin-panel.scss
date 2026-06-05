@@ -1,0 +1,245 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+  color: #f8fafc;
+  padding: 2rem;
+}
+
+.admin-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+// BARRA SUPERIOR
+.navbar-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e293b;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  margin-bottom: 3rem;
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #e2e8f0;
+    span { color: #f43f5e; font-weight: bold; }
+  }
+
+  .btn-logout {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+      filter: brightness(1.1);
+    }
+  }
+}
+
+// GRID E CARDS
+.grid-admin {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.card-form {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 2rem;
+
+  h2 {
+    font-size: 1.25rem;
+    color: #38bdf8;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.5rem;
+  }
+}
+
+// CORPO DOS COMPONENTES E INPUTS
+.form-group {
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+
+  label {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: #38bdf8;
+    }
+  }
+}
+
+// DIVISORES DE CONFRONTO (O "X")
+.row-confronto {
+  display: flex;
+  gap: 1rem;
+  .form-group { flex: 1; }
+}
+
+.divisor-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.5rem;
+  font-weight: bold;
+  color: #64748b;
+}
+
+.divisor-x-pequeno {
+  color: #64748b;
+  font-weight: bold;
+
+  &.cor-indigo {
+    color: #6366f1;
+  }
+}
+
+// LISTAGEM DE JOGOS CADASTRADOS
+.item-jogo-admin {
+  border-bottom: 1px solid #334155;
+  padding: 2rem 0;
+  margin-bottom: 1rem;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+}
+
+.titulo-confronto {
+  color: #f8fafc;
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+
+  span { color: #38bdf8; }
+}
+
+// SEÇÕES INTERNAS (PLACAR E PALPITE)
+.admin-secao {
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+
+  &.secao-placar {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    h4 { color: #94a3b8; }
+    input { text-align: center; }
+  }
+
+  &.secao-palpite {
+    background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    h4 { color: #a5b4fc; }
+    input { text-align: center; }
+  }
+}
+
+// ALINHAMENTO DINÂMICO DE INPUTS COM BOTÕES
+.row-inputs-btn {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  max-width: 1000px;
+
+  &.flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .input-nome {
+    flex: 2;
+    min-width: 180px;
+    input { text-align: left !important; }
+  }
+
+  .input-gols {
+    width: 70px;
+  }
+}
+
+// BOTÕES PADRONIZADOS
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-sizing: border-box;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+  }
+
+  &.btn-success {
+    margin-top: 1rem;
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+
+  &.btn-indigo {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    flex: 1;
+  }
+}
+
+// ESTADOS VAZIOS
+.sem-jogos {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+  margin: 0;
+}
