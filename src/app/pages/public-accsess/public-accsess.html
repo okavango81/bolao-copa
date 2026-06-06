@@ -1,6 +1,6 @@
 <div class = "container">
   <header>
-    <h1>🏆 BOLÃO DO EDBET</h1>
+    <h1>🏆 Bolão EdBet</h1>
     <p>Acompanhe os palpites e os vencedores em tempo real</p>
   </header>
 
@@ -14,6 +14,15 @@
         </option>
       }
     </select>
+
+    @if (jogoAtivo(); as jogo) {
+      <div class = "confronto-container">
+        <span class = "badge-premio">
+          Valor do prêmio para essa partida: <strong>{{ premioTotal() | currency:'BRL':'R$ ':'1.2-2' }}</strong>
+        </span>
+      </div>
+    }
+
   </div>
 
   @if (jogoAtivo(); as jogo) {
@@ -75,9 +84,17 @@
           ⭐ {{ g.bettor_name }}
         </span>
       } @empty {
-        <p class = "nenhum">
-          Ninguém acertou o placar ainda... 😭
-        </p>
+        @if (jogoAtivo(); as jogo) {
+          @if (jogo.goals_team_a !== null && jogo.goals_team_b !== null) {
+            <p class = "nenhum">
+              Ninguém acertou o placar... 😭
+            </p>
+          } @else {
+            <p class = "aguardando">
+              🕒 Os ganhadores aparecerão aqui assim que o jogo terminar!
+            </p>
+          }
+        }
       }
     </div>
   </div>

@@ -1,6 +1,5 @@
 import {Injectable, signal} from '@angular/core';
 import {createClient, SupabaseClient} from '@supabase/supabase-js';
-import {environment} from '../../environments/environment';
 
 export interface Match
 {
@@ -10,6 +9,7 @@ export interface Match
   goals_team_a: number | null;
   goals_team_b: number | null;
   created_at?: string;
+  bet_value: number | null;
 }
 
 export interface Guess
@@ -25,7 +25,6 @@ export interface Guess
 @Injectable({providedIn: 'root'})
 export class Supabase
 {
-  // Signals para gerenciar o estado globalmente
   matches = signal<Match[]>([]);
   activeMatch = signal<Match | null>(null);
   guesses = signal<Guess[]>([]);
@@ -34,54 +33,54 @@ export class Supabase
   constructor()
   {
     this.supabase = createClient(
-      'https://xmbstkxuisgscaxkypbs.supabase.co', // <-- Substitua pelo seu Project URL real
-      'sb_publishable_FfUdzax2m1Z2Dlxp8NrioA_sn2JmakQ' // <-- Substitua pela sua API anon key real
+      'https://xmbstkxuisgscaxkypbs.supabase.co',
+      'sb_publishable_FfUdzax2m1Z2Dlxp8NrioA_sn2JmakQ'
     );
     this.loadMatches();
   }
 
-  // --- MÉTODOS DE JOGOS ---
-
-  // Carrega todos os jogos cadastrados
   async loadMatches()
   {
     const {data, error} = await this.supabase
       .from('matches')
       .select('*')
-      .order('created_at', {ascending: false}); // O mais recente primeiro
+      .order('created_at', {ascending: false});
 
     if (!error && data)
     {
       this.matches.set(data);
-      // Se houver jogos e nenhum estiver ativo ainda, define o último como padrão
-      if (data.length > 0 && !this.activeMatch())
+      // Mantém ou redefine a partida ativa de fundo
+      const currentActive = this.activeMatch();
+      if (currentActive)
+      {
+        const aindaExiste = data.find(m => m.id === currentActive.id);
+        if (!aindaExiste && data.length > 0) this.setActiveMatch(data[0]);
+        else if (!aindaExiste) this.activeMatch.set(null);
+      } else if (data.length > 0)
       {
         this.setActiveMatch(data[0]);
       }
     }
   }
 
-  // Define qual jogo está sendo visualizado na tela e carrega os palpites dele
   setActiveMatch(match: Match)
   {
     this.activeMatch.set(match);
     this.loadGuessesForMatch(match.id);
   }
 
-  // Cadastra um novo jogo (Admin)
-  async createMatch(teamA: string, teamB: string)
+  async createMatch(teamA: string, teamB: string, betValue: number)
   {
     const {error} = await this.supabase
       .from('matches')
-      .insert([{team_a: teamA, team_b: teamB}]);
+      .insert([{team_a: teamA, team_b: teamB, bet_value: betValue}]);
 
     if (!error)
     {
-      await this.loadMatches(); // Atualiza a lista de jogos
+      await this.loadMatches();
     }
   }
 
-  // Atualiza o placar final do jogo (Admin)
   async updateMatchScore(matchId: number, goalsA: number, goalsB: number)
   {
     const {error} = await this.supabase
@@ -92,7 +91,6 @@ export class Supabase
     if (!error)
     {
       await this.loadMatches();
-      // Atualiza o jogo ativo se for o caso
       const currentActive = this.activeMatch();
       if (currentActive && currentActive.id === matchId)
       {
@@ -101,9 +99,58 @@ export class Supabase
     }
   }
 
+  async updateBetValue(matchId: number, valueBet: number) {
+    // 1. Garante que o valor recebido seja tratado estritamente como um número legítimo
+    const numericValue = Number(valueBet);
+
+    const { error } = await this.supabase
+      .from('matches')
+      .update({ bet_value: numericValue })
+      .eq('id', matchId);
+
+    // 2. Registra o erro no console caso o Supabase falhe ou recuse a query
+    if (error) {
+      console.error('Erro ao atualizar o bet_value no Supabase:', error);
+      return; // Interrompe o fluxo para não atualizar o estado local com dados incorretos
+    }
+
+    // 3. Se tudo deu certo no banco, atualiza os estados reativos locais
+    await this.loadMatches();
+
+    const currentActive = this.activeMatch();
+    if (currentActive && currentActive.id === matchId) {
+      this.activeMatch.update(m => m ? { ...m, bet_value: numericValue } : null);
+    }
+  }
+
+  async deleteMatch(matchId: number)
+  {
+    try
+    {
+      const {error} = await this.supabase
+        .from('matches')
+        .delete()
+        .eq('id', matchId);
+
+      if (error)
+      {
+        console.error('Erro ao deletar partida:', error.message);
+        alert('Erro ao apagar partida no banco. Verifique se existem restrições de chave estrangeira.');
+        return false;
+      }
+
+      // CORREÇÃO: Força o recarregamento total da lista vinda do Supabase
+      this.loadMatches();
+      return true;
+    } catch (err)
+    {
+      console.error('Erro inesperado ao deletar partida:', err);
+      return false;
+    }
+  }
+
   // --- MÉTODOS DE PALPITES ---
 
-  // Busca palpites filtrados pelo ID do jogo ativo
   async loadGuessesForMatch(matchId: number)
   {
     const {data, error} = await this.supabase
@@ -118,8 +165,29 @@ export class Supabase
     }
   }
 
-  // Envia um palpite atrelado ao jogo ativo
-  // Envia um palpite atrelado a um jogo específico escolhido pelo Admin
+  async getGuessesByMatch(matchId: number)
+  {
+    try
+    {
+      const {data, error} = await this.supabase
+        .from('guesses')
+        .select('*')
+        .eq('match_id', matchId)
+        .order('created_at', {ascending: true});
+
+      if (error)
+      {
+        console.error('Erro ao buscar palpites:', error.message);
+        return [];
+      }
+      return data || [];
+    } catch (err)
+    {
+      console.error('Erro inesperado:', err);
+      return [];
+    }
+  }
+
   async saveGuess(matchId: number, bettorName: string, goalsA: number, goalsB: number)
   {
     const {error} = await this.supabase
@@ -133,7 +201,6 @@ export class Supabase
 
     if (!error)
     {
-      // Se o palpite for do jogo que está aberto na tela atual, recarrega a lista
       const currentActive = this.activeMatch();
       if (currentActive && currentActive.id === matchId)
       {
@@ -142,10 +209,61 @@ export class Supabase
     }
   }
 
-  // No seu serviço, mude o estado de autenticado para falso
+  async updateGuess(guessId: number, goalsA: number, goalsB: number, matchId: number)
+  {
+    try
+    {
+      // CORREÇÃO: Mapeia explicitamente para os nomes exatos das colunas da tabela de palpites
+      const {error} = await this.supabase
+        .from('guesses')
+        .update({goals_team_a: goalsA, goals_team_b: goalsB})
+        .eq('id', guessId);
+
+      if (error)
+      {
+        console.error('Erro ao atualizar palpite:', error.message);
+        alert('Erro ao salvar alteração do palpite.');
+        return false;
+      }
+
+      const currentActive = this.activeMatch();
+      if (currentActive && currentActive.id === matchId)
+      {
+        await this.loadGuessesForMatch(matchId);
+      }
+      return true;
+    } catch (err)
+    {
+      console.error('Erro inesperado ao atualizar palpite:', err);
+      return false;
+    }
+  }
+
+  async deleteGuess(guessId: number)
+  {
+    try
+    {
+      const {error} = await this.supabase
+        .from('guesses')
+        .delete()
+        .eq('id', guessId);
+
+      if (error)
+      {
+        console.error('Erro ao deletar palpite:', error.message);
+        alert('Não foi possível deletar o palpite no banco de dados.');
+        return false;
+      }
+      return true;
+    } catch (err)
+    {
+      console.error('Erro inesperado ao deletar palpite:', err);
+      return false;
+    }
+  }
+
   logout()
   {
-    // Se você usa uma chave no localStorage ou um Signal de login:
-    localStorage.removeItem('isAdminAuthenticated'); // ou o método que você usa para guardar a sessão
+    localStorage.removeItem('isAdminAuthenticated');
   }
 }

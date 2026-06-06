@@ -3,481 +3,875 @@
   display: block;
   min-height: 100vh;
   padding: 1.5rem 1rem;
-
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-
-  background: linear-gradient(
-      135deg,
-      #0f172a 0%,
-      #1e293b 100%
-  );
-
+  background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
   color: #f8fafc;
+  border-radius: 1rem;
 }
 
-*,
-*::before,
-*::after
+*, *::before, *::after
 {
   box-sizing: border-box;
+  color-scheme: dark;
 }
 
 .admin-wrapper
 {
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* =========================
-   NAVBAR
+   NAVBAR (ADMIN)
    ========================= */
-
 .navbar-admin
 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   gap: 1rem;
-
   background: #1e293b;
-
   border: 1px solid #334155;
   border-radius: 12px;
-
   padding: 1rem 1.25rem;
-
   margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
 
   h1
   {
     margin: 0;
-
-    font-size: 1.4rem;
-    font-weight: 700;
-
+    font-size: 1.35rem;
+    font-weight: 800;
     color: #e2e8f0;
+    letter-spacing: 0.5px;
 
     span
     {
-      color: #f43f5e;
+      color: #8c19fa; /* Rose Neon característico de Admin */
     }
+  }
+}
+
+.nav-actions
+{
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* =========================
+   CONTAINER CARDS
+   ========================= */
+.card-form
+{
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+  h2
+  {
+    margin: 0 0 1.25rem;
+    color: #38bdf8;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #334155;
+  }
+}
+
+/* =========================
+   LISTAGEM DE JOGOS (PANEL CLEAN)
+   ========================= */
+.lista-jogos
+{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.linha-jogo
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  transition: 0.2s ease-in-out;
+
+  &:hover
+  {
+    border-color: #475569;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.info-confronto
+{
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 1;
+
+  .badge-id
+  {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: #1e293b;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-weight: 700;
+  }
+
+  .times
+  {
+    font-size: 1rem;
+    color: #f8fafc;
+    font-weight: 600;
+    flex: 1;
+
+    &:first-of-type
+    {
+      text-align: right;
+    }
+
+    &:last-of-type
+    {
+      text-align: left;
+    }
+  }
+
+  .placar-badge
+  {
+    background: #1e293b;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-weight: 800;
+    color: #38bdf8;
+    border: 1px solid #334155;
+    min-width: 65px;
+    text-align: center;
+    font-size: 1.05rem;
+  }
+}
+
+.acoes-jogo
+{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* =========================
+   BOTÕES E AÇÕES DO SISTEMA
+   ========================= */
+.btn-primary
+{
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border-radius: 8px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+
+  &:hover
+  {
+    filter: brightness(1.1);
+  }
+}
+
+.btn-add
+{
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  span
+  {
+    font-size: 1.1rem;
+    font-weight: bold;
   }
 }
 
 .btn-logout
 {
-
-  background: rgba(239, 68, 68, .15);
+  background: rgba(239, 68, 68, 0.12);
   color: #fca5a5;
-
-  border: 1px solid rgba(239, 68, 68, .25);
-
-  padding: .75rem 1rem;
-
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 0.75rem 1.1rem;
   border-radius: 8px;
-
-  font-size: .9rem;
-  font-weight: 600;
-
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-
-  transition: .2s;
-}
-
-.btn-logout:hover
-{
-  background: rgba(239, 68, 68, .22);
-}
-
-/* =========================
-   GRID
-   ========================= */
-
-.grid-admin
-{
-  display: grid;
-  gap: 1.5rem;
-}
-
-/* =========================
-   CARDS
-   ========================= */
-
-.card-form
-{
-  background: #1e293b;
-
-  border: 1px solid #334155;
-  border-radius: 12px;
-
-  padding: 1.5rem;
-}
-
-.card-form h2
-{
-  margin: 0 0 1.25rem;
-
-  color: #38bdf8;
-
-  font-size: 1.15rem;
-  font-weight: 700;
-
-  padding-bottom: .75rem;
-
-  border-bottom: 1px solid #334155;
-}
-
-/* =========================
-   FORMULÁRIOS
-   ========================= */
-
-.form-group
-{
-  width: 100%;
-}
-
-.form-group label
-{
-  display: block;
-
-  margin-bottom: .5rem;
-
-  color: #94a3b8;
-
-  font-size: .85rem;
-  font-weight: 600;
-}
-
-.form-group input
-{
-  width: 100%;
-
-  background: #0f172a;
-
-  border: 1px solid #475569;
-  border-radius: 8px;
-
-  color: #f8fafc;
-
-  padding: .8rem;
-
-  outline: none;
-
-  font-size: .95rem;
-
-  transition: .2s;
-}
-
-.form-group input:focus
-{
-  border-color: #38bdf8;
-}
-
-/* remove setinhas grandes do number */
-input[type='number']
-{
-  appearance: textfield;
-}
-
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button
-{
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* =========================
-   NOVO JOGO
-   ========================= */
-
-.row-confronto
-{
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.row-confronto .form-group
-{
-  flex: 1;
-}
-
-.divisor-x
-{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding-top: 2rem;
-
-  color: #64748b;
-
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-/* =========================
-   JOGOS
-   ========================= */
-
-.item-jogo-admin
-{
-  padding: 1.5rem 0;
-
-  border-bottom: 1px solid #334155;
-}
-
-.item-jogo-admin:last-child
-{
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.titulo-confronto
-{
-  margin: 0 0 1rem;
-
-  color: #f8fafc;
-
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.titulo-confronto span
-{
-  color: #38bdf8;
-}
-
-/* =========================
-   SEÇÕES
-   ========================= */
-
-.admin-secao
-{
-  border-radius: 10px;
-
-  padding: 1rem;
-
-  margin-bottom: 1rem;
-}
-
-.admin-secao h4
-{
-  margin: 0 0 .9rem;
-
-  font-size: .85rem;
-  font-weight: 700;
-
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
-.secao-placar
-{
-  background: #0f172a;
-
-  border: 1px solid #1f2937;
-}
-
-.secao-placar h4
-{
-  color: #94a3b8;
-}
-
-.secao-palpite
-{
-  background: linear-gradient(
-      135deg,
-      rgba(99, 102, 241, .12),
-      rgba(30, 41, 59, 1)
-  );
-
-  border: 1px solid rgba(99, 102, 241, .25);
-}
-
-.secao-palpite h4
-{
-  color: #a5b4fc;
-}
-
-/* =========================
-   LINHAS DE INPUTS
-   ========================= */
-
-.row-inputs-btn
-{
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-}
-
-.row-inputs-btn.flex-wrap
-{
-  flex-wrap: wrap;
-}
-
-.input-nome
-{
-  flex: 1;
-  min-width: 220px;
-}
-
-.input-nome input
-{
-  text-align: left !important;
-}
-
-.input-gols
-{
-  width: 65px;
-  flex-shrink: 0;
-}
-
-.input-gols input
-{
-  text-align: center;
-}
-
-.divisor-x-pequeno
-{
-  color: #64748b;
-
-  font-size: 1rem;
-  font-weight: 700;
-
-  flex-shrink: 0;
-}
-
-.divisor-x-pequeno.cor-indigo
-{
-  color: #818cf8;
-}
-
-/* =========================
-   BOTÕES
-   ========================= */
-
-.btn-primary
-{
-  border: none;
-
-  background: linear-gradient(
-      135deg,
-      #3b82f6,
-      #2563eb
-  );
-
-  color: white;
-
-  border-radius: 8px;
-
-  padding: .8rem 1.2rem;
-
-  font-size: .9rem;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition: .2s;
-
-  white-space: nowrap;
-}
-
-.btn-primary:hover
-{
-  filter: brightness(1.08);
+  transition: 0.2s;
+
+  &:hover
+  {
+    background: rgba(239, 68, 68, 0.22);
+  }
 }
 
 .btn-success
 {
   width: 100%;
-
-  margin-top: 1rem;
-
-  background: linear-gradient(
-      135deg,
-      #10b981,
-      #059669
-  );
+  margin-top: 1.25rem;
+  background: linear-gradient(135deg, #10b981, #059669);
 }
 
 .btn-indigo
 {
-  background: linear-gradient(
-      135deg,
-      #6366f1,
-      #4f46e5
-  );
+  width: 100%;
+  margin-top: 1.25rem;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
 }
 
-/* =========================
-   ESTADO VAZIO
-   ========================= */
-
-.sem-jogos
+.btn-acao
 {
-  margin: 0;
+  border: none;
+  padding: 0.55rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #fff;
+  white-space: nowrap;
 
-  text-align: center;
+  &.btn-placar
+  {
+    background: #3b82f6;
 
-  color: #94a3b8;
-  font-style: italic;
+    &:hover
+    {
+      background: #2563eb;
+    }
+  }
 
-  padding: 1rem 0;
+  &.btn-palpite
+  {
+    background: #6366f1;
+
+    &:hover
+    {
+      background: #4f46e5;
+    }
+  }
+
+  &.btn-ver-apostadores
+  {
+    background: #10b981;
+
+    &:hover
+    {
+      background: #059669;
+    }
+  }
+
+  &.btn-deletar
+  {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+
+    &:hover
+    {
+      background: rgba(239, 68, 68, 0.35);
+    }
+  }
 }
 
 /* =========================
-   RESPONSIVO
+   INPUTS INTERNOS E MODAL DESIGN
    ========================= */
+.form-group-modal
+{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
+  label
+  {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+  }
+
+  input
+  {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    color: #f8fafc !important;
+    padding: 0.8rem;
+    outline: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: 0.2s;
+
+    &:focus
+    {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+    }
+
+    &::placeholder
+    {
+      color: #334155;
+    }
+  }
+}
+
+.row-confronto
+{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.7rem;
+
+  .form-group-modal
+  {
+    flex: 1;
+  }
+}
+
+.divisor-x
+{
+  color: #475569;
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding-top: 1.5rem;
+}
+
+/* Estrutura das seções do modal */
+/* Container principal de cada seção do modal */
+/* ==========================================================================
+   FIX: SEÇÃO DE EDIÇÃO DOS INPUTS E BOTÕES CENTRALIZADOS NO MODAL
+   ========================================================================== */
+
+/* Container principal de cada seção (Placar ou Valor da Aposta) */
+.bloco-edicao-modal
+{
+  display: flex;
+  flex-direction: column; /* Empilha o Título, os Inputs e o Botão verticalmente */
+  align-items: center; /* Garante a centralização perfeita de todos os filhos */
+  width: 100%;
+  margin-bottom: 0.5rem;
+
+  & h4
+  {
+    margin: 0 0 1rem 0;
+    color: #6aa9e7;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* O botão de ação que fica embaixo dos inputs */
+  & .btn-primary
+  {
+    margin-top: 1rem;
+    white-space: nowrap;
+    padding: 0.6rem 1.5rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* Impede que o botão estique 100% se não quiser */
+  }
+}
+
+/* Linha horizontal interna que envelopa apenas os inputs e divisores */
+.row-inputs-btn
+{
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Força a linha horizontal a se posicionar no centro */
+  width: 100%;
+  gap: 0.75rem; /* Espaço perfeito entre inputs e o caractere 'x' */
+}
+
+/* Garante que os grupos de inputs herdem a centralização */
+.input-gols, .input-valor
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Limita e centraliza o input de dinheiro */
+.input-valor
+{
+  max-width: 120px; /* Largura ideal para valores em dinheiro */
+
+  & input
+  {
+    text-align: center; /* Deixa o texto digitado exatamente no centro */
+  }
+}
+
+/* Linha divisória discreta entre os dois blocos do modal */
+.divisor-modal
+{
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+/* Linha horizontal interna apenas para os inputs (placar ou valor) */
+.row-inputs-btn
+{
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &.centralizado
+  {
+    justify-content: center; /* Centraliza horizontalmente os inputs e o 'X' */
+  }
+}
+
+/* Limita o input de dinheiro para ele não esticar e quebrar o visual */
+.input-valor
+{
+  max-width: 100px;
+
+  & input
+  {
+    text-align: center; /* Deixa o número digitado bem no centro do input */
+  }
+}
+
+/* Linha divisória discreta entre os dois blocos */
+.divisor-modal
+{
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+/* Linha horizontal para os inputs e botão correspondente */
+.row-inputs-btn
+{
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  gap: 0.75rem; /* Espaço entre inputs, o 'X' e o botão */
+
+  /* Garante que o botão ocupe o espaço restante ou se ajuste bem */
+  & .btn-primary
+  {
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    height: 38px; /* Alinha a altura perfeitamente com o input */
+  }
+}
+
+/* Ajuste específico para o input de valor não ficar gigante */
+.input-valor
+{
+  max-width: 120px; /* Largura ideal para um campo de dinheiro */
+}
+
+/* Linha divisória sutil entre as duas ações do modal */
+.divisor-modal
+{
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  margin: 1.25rem 0;
+}
+
+.input-gols
+{
+  width: 75px !important;
+
+  input
+  {
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #38bdf8 !important;
+  }
+}
+
+.divisor-x-pequeno
+{
+  color: #475569;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.mt-1
+{
+  margin-top: 1rem;
+}
+
+/* =========================
+   MODAIS E DESIGN DE BACKDROP
+   ========================= */
+.modal-backdrop
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.modal-content
+{
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  animation: scaleUp 0.18s ease-out;
+}
+
+.modal-header
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 2rem;
+  white-space: pre-line; /* Isso faz o HTML respeitar o Enter ou o \n */
+
+  h3
+  {
+    margin: 0;
+    font-size: 1rem;
+    color: #f8fafc;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-close
+  {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover
+    {
+      color: #f8fafc;
+    }
+  }
+}
+
+.modal-title-confronto
+{
+  font-size: 0.65rem;
+  color: #a3b8cc;
+  text-transform: uppercase;
+  margin-top: -36px;
+  padding-bottom: 1.5rem;
+}
+
+/* =========================
+   GERENCIADOR DE APOSTADORES (INTERNO)
+   ========================= */
+.wrapper-tabela-apostadores
+{
+  max-height: 290px;
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0f172a;
+}
+
+.tabela-admin-apostadores
+{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  thead
+  {
+    background: #1e293b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    th
+    {
+      padding: 0.85rem;
+      text-align: left;
+      font-weight: 700;
+      color: #38bdf8;
+      border-bottom: 1px solid #334155;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody tr
+  {
+    border-bottom: 1px solid #1e293b;
+
+    &:last-child
+    {
+      border-bottom: none;
+    }
+
+    &:hover
+    {
+      background: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  td
+  {
+    padding: 0.85rem;
+    vertical-align: middle;
+    color: #e2e8f0;
+  }
+}
+
+.nome-apostador-td
+{
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.placar-apostador-td
+{
+  font-weight: 800;
+  color: #a5b4fc;
+  font-size: 1rem;
+}
+
+.txt-centro
+{
+  text-align: center !important;
+}
+
+.inputs-inline-edicao
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+
+  span
+  {
+    color: #475569;
+    font-weight: bold;
+  }
+
+  .mini-input-gols
+  {
+    width: 42px;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 4px;
+    color: #fff;
+    outline: none;
+
+    &:focus
+    {
+      border-color: #38bdf8;
+    }
+  }
+}
+
+.acoes-inline-tabela
+{
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+
+  button
+  {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: 0.2s;
+
+    &.btn-salvar-mini
+    {
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+
+      &:hover
+      {
+        background: rgba(16, 185, 129, 0.1);
+      }
+    }
+
+    &.btn-cancelar-mini
+    {
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+
+      &:hover
+      {
+        background: rgba(239, 68, 68, 0.1);
+      }
+    }
+
+    &.btn-editar-individual
+    {
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+
+      &:hover
+      {
+        background: rgba(59, 130, 246, 0.15);
+      }
+    }
+
+    &.btn-deletar-individual
+    {
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+
+      &:hover
+      {
+        background: rgba(239, 68, 68, 0.15);
+      }
+    }
+  }
+}
+
+.sem-jogos, .sem-apostadores
+{
+  text-align: center;
+  color: #475569;
+  font-style: italic;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+@keyframes scaleUp
+{
+  from
+  {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to
+  {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================
+   RESPONSIVIDADE (MOBILE)
+   ========================= */
 @media (max-width: 768px)
 {
   :host
   {
-    padding: 1rem .75rem;
+    padding: 1rem 0.5rem;
   }
-
   .navbar-admin
   {
     flex-direction: column;
     align-items: stretch;
-  }
+    padding: 1rem;
 
-  .btn-logout
-  {
-    width: 100%;
+    h1
+    {
+      text-align: center;
+    }
   }
-
-  .row-confronto
+  .nav-actions
   {
     flex-direction: column;
-    gap: .75rem;
-  }
+    width: 100%;
+    margin-top: 0.5rem;
 
-  .divisor-x
+    button
+    {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  .linha-jogo
   {
-    padding: 0;
-    font-size: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    padding: 1.25rem 1rem;
   }
-
-  .row-inputs-btn
+  .info-confronto
   {
     flex-wrap: wrap;
-  }
+    justify-content: center;
+    gap: 0.5rem;
 
-  .input-nome
-  {
-    min-width: 100%;
-  }
+    .badge-id
+    {
+      width: 100%;
+      text-align: center;
+    }
 
-  .input-gols
-  {
-    width: 80px;
-  }
+    .times
+    {
+      &:first-of-type
+      {
+        text-align: right;
+      }
 
-  .btn-primary
+      &:last-of-type
+      {
+        text-align: left;
+      }
+    }
+  }
+  .acoes-jogo
   {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
     width: 100%;
+
+    button
+    {
+      width: 100%;
+    }
   }
 }

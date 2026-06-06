@@ -1,84 +1,199 @@
-<div class="admin-wrapper">
-  <nav class="navbar-admin">
-    <h1>Painel <span>Admin Bolão 🏆</span></h1>
-    <button class="btn-logout" (click)="efetuarLogout()">Sair / Trancar 🔒</button>
+<div class = "admin-wrapper">
+  <nav class = "navbar-admin">
+    <h1>Painel <span>Admin EdBet 🏆</span></h1>
+    <div class = "nav-actions">
+      <button class = "btn-primary btn-add" (click) = "abrirModal('cadastro-jogo')"><span>+</span> Novo Jogo</button>
+      <button class = "btn-logout" (click) = "efetuarLogout()">Sair 🔒</button>
+    </div>
   </nav>
 
-  <div class="grid-admin">
+  <div class = "card-form">
+    <h2>Gerenciar Confrontos e Resultados</h2>
 
-    <div class="card-form">
-      <h2>1. Cadastrar Novo Jogo</h2>
-      <div class="row-confronto">
-        <div class="form-group">
-          <label>Seleção A</label>
-          <input type="text" [(ngModel)]="novoTimeA" placeholder="Ex: Brasil" />
-        </div>
-
-        <div class="divisor-x">X</div>
-
-        <div class="form-group">
-          <label>Seleção B</label>
-          <input type="text" [(ngModel)]="novoTimeB" placeholder="Ex: Argentina" />
-        </div>
-      </div>
-      <button class="btn-primary btn-success" (click)="cadastrarJogo()">
-        Criar Confronto 🚀
-      </button>
-    </div>
-
-    <div class="card-form">
-      <h2>2. Gerenciar Jogos e Palpites</h2>
-
+    <div class = "lista-jogos">
       @for (jogo of jogos(); track jogo.id) {
-        <div class="item-jogo-admin">
-          <h3 class="titulo-confronto">
-            ⚽ Confronto: <span>{{ jogo.team_a }}</span> x <span>{{ jogo.team_b }}</span>
-          </h3>
-
-          <div class="admin-secao secao-placar">
-            <h4>Placar Oficial do Jogo:</h4>
-
-            <div class="row-inputs-btn">
-              <div class="form-group input-gols">
-                <input type="number" [(ngModel)]="getPlacarCampos(jogo.id, jogo.goals_team_a, jogo.goals_team_b).goalsA" placeholder="0" />
-              </div>
-              <span class="divisor-x-pequeno">x</span>
-              <div class="form-group input-gols">
-                <input type="number" [(ngModel)]="getPlacarCampos(jogo.id, jogo.goals_team_a, jogo.goals_team_b).goalsB" placeholder="0" />
-              </div>
-              <button class="btn-primary" (click)="salvarPlacarOficial(jogo.id)">
-                Salvar Placar
-              </button>
-            </div>
+        <div class = "linha-jogo">
+          <div class = "info-confronto">
+            <span class = "badge-id">#{{ jogo.id }}</span>
+            <strong class = "times">{{ jogo.team_a }}</strong>
+            <span class = "placar-badge">
+              {{ jogo.goals_team_a !== null ? jogo.goals_team_a : '-' }}
+              x
+              {{ jogo.goals_team_b !== null ? jogo.goals_team_b : '-' }}
+            </span>
+            <strong class = "times">{{ jogo.team_b }}</strong>
           </div>
 
-          <div class="admin-secao secao-palpite">
-            <h4>Lançar Palpite de Amigo:</h4>
-
-            <div class="row-inputs-btn flex-wrap">
-              <div class="form-group input-nome">
-                <input type="text" placeholder="Nome do Amigo" [(ngModel)]="getPalpiteCampos(jogo.id).nome" />
-              </div>
-
-              <div class="form-group input-gols">
-                <input type="number" [(ngModel)]="getPalpiteCampos(jogo.id).goalsA" placeholder="0" />
-              </div>
-              <span class="divisor-x-pequeno cor-indigo">x</span>
-              <div class="form-group input-gols">
-                <input type="number" [(ngModel)]="getPalpiteCampos(jogo.id).goalsB" placeholder="0" />
-              </div>
-
-              <button class="btn-primary btn-indigo" (click)="adicionarPalpiteAmigo(jogo.id)">
-                Gravar Palpite 💾
-              </button>
-            </div>
+          <div class = "acoes-jogo">
+            <button class = "btn-acao btn-placar" title = "Editar Placar Oficial"
+                    (click) = "abrirModal('editar-placar', jogo)">
+              ✏️ Editar
+            </button>
+            <button class = "btn-acao btn-palpite" title = "Lançar Palpite"
+                    (click) = "abrirModal('novo-palpite', jogo)">
+              💬 +Palpite
+            </button>
+            <button class = "btn-acao btn-ver-apostadores" title = "Gerenciar Apostadores"
+                    (click) = "abrirModal('ver-apostadores', jogo)">
+              👥 Apostadores
+            </button>
+            <button class = "btn-acao btn-deletar" (click) = "excluirJogo(jogo.id, jogo.team_a + ' x ' + jogo.team_b)">
+              🗑️ Apagar
+            </button>
           </div>
-
         </div>
       } @empty {
-        <p class="sem-jogos">Nenhum jogo cadastrado até o momento.</p>
+        <p class = "sem-jogos">Nenhum jogo cadastrado. Clique em "+ Novo Jogo" para começar!</p>
       }
     </div>
-
   </div>
 </div>
+
+@if (exibirModal) {
+  <div class = "modal-backdrop" (click) = "fecharModal()">
+    <div class = "modal-content" (click) = "$event.stopPropagation()">
+      <div class = "modal-header">
+        <h3>{{ tituloModal }}</h3>
+        <button class = "btn-close" (click) = "fecharModal()">&times;</button>
+      </div>
+
+        <p class="modal-title-confronto">{{ confrontoModal }}</p>
+
+      <div class = "modal-body">
+
+        @if (modoModal === 'cadastro-jogo') {
+          <div class = "row-confronto">
+            <div class = "form-group-modal">
+              <label>Seleção A</label>
+              <input type = "text" [(ngModel)] = "novoTimeA" placeholder = "Ex: Brasil"/>
+            </div>
+            <div class = "divisor-x">X</div>
+            <div class = "form-group-modal">
+              <label>Seleção B</label>
+              <input type = "text" [(ngModel)] = "novoTimeB" placeholder = "Ex: Argentina"/>
+            </div>
+          </div>
+          <div class = "row-confronto">
+            <div class = "form-group-modal">
+              <label>Valor da aposta R$</label>
+              <input type = "number" [(ngModel)] = "valorAposta" placeholder = "Valor da Aposta (R$)" min = "0"
+                     step = "0.50">
+            </div>
+          </div>
+          <button class = "btn-primary btn-success" (click) = "cadastrarJogo()">Salvar Jogo 🚀</button>
+        }
+
+        @if (modoModal === 'editar-placar') {
+
+          <div class="bloco-edicao-modal">
+            <h4>Placar</h4>
+
+            <div class="row-inputs-btn centralizado">
+              <div class="form-group-modal input-gols">
+                <input type="number" [(ngModel)]="golsEdicaoA" min="0" step="1" placeholder="0"/>
+              </div>
+              <span class="divisor-x-pequeno">x</span>
+              <div class="form-group-modal input-gols">
+                <input type="number" [(ngModel)]="golsEdicaoB" min="0" step="1" placeholder="0"/>
+              </div>
+            </div>
+
+            <button class="btn-primary btn-success" (click)="salvarPlacarOficial()">Atualizar Placar 💾</button>
+          </div>
+
+          <hr class="divisor-modal" />
+
+          <div class="bloco-edicao-modal">
+            <h4>Valor da aposta</h4>
+
+            <div class="row-inputs-btn centralizado">
+              <div class="form-group-modal input-valor">
+                <input type="number" [(ngModel)]="valorEdicao" min="0" step="0.5" placeholder="0"/>
+              </div>
+            </div>
+
+            <button class="btn-primary btn-success" (click)="salvarValorAposta()">Atualizar valor da aposta 💾</button>
+          </div>
+
+        }
+
+        @if (modoModal === 'novo-palpite') {
+          <div class = "form-palpite-modal">
+            <div class = "form-group-modal input-nome-modal">
+              <label>Nome do Apostador</label>
+              <input #nomeDoApostador type = "text" placeholder = "Ex: Guilherme" [(ngModel)] = "nomeApostador"/>
+            </div>
+            <div class = "row-inputs-btn centralizado mt-1">
+              <div class = "form-group-modal input-gols">
+                <input type = "number" [(ngModel)] = "golsApostadorA" min="0" placeholder = "0"/>
+              </div>
+              <span class = "divisor-x-pequeno cor-indigo">x</span>
+              <div class = "form-group-modal input-gols">
+                <input type = "number" [(ngModel)] = "golsApostadorB" min="0" placeholder = "0"/>
+              </div>
+            </div>
+          </div>
+          <button class = "btn-primary btn-indigo" (click) = "adicionarPalpiteAmigo()">Gravar Palpite 💾</button>
+        }
+
+        @if (modoModal === 'ver-apostadores') {
+          <div class = "wrapper-tabela-apostadores">
+            @if (palpitesDoJogo().length > 0) {
+              <table class = "tabela-admin-apostadores">
+                <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th class = "txt-centro">Palpite</th>
+                  <th class = "txt-centro">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (palpite of palpitesDoJogo(); track palpite.id) {
+                    <tr>
+                      <td class = "nome-apostador-td">{{ palpite.bettor_name }}</td>
+
+                      <td class = "txt-centro placar-apostador-td">
+                        @if (apostadorEmEdicaoId === palpite.id) {
+                          <div class = "inputs-inline-edicao">
+                            <input type = "number" class = "mini-input-gols" [(ngModel)] = "golsApostadorEdicaoA"/>
+                            <span>x</span>
+                            <input type = "number" class = "mini-input-gols" [(ngModel)] = "golsApostadorEdicaoB"/>
+                          </div>
+                        } @else {
+                          {{ palpite.goals_team_a }} x {{ palpite.goals_team_b }}
+                        }
+                      </td>
+
+                      <td class = "txt-centro">
+                        <div class = "acoes-inline-tabela">
+                          @if (apostadorEmEdicaoId === palpite.id) {
+                            <button class = "btn-salvar-mini" (click) = "salvarEdicaoApostador(palpite.id)"
+                                    title = "Salvar">💾
+                            </button>
+                            <button class = "btn-cancelar-mini" (click) = "cancelarEdicaoApostador()"
+                                    title = "Cancelar">❌
+                            </button>
+                          } @else {
+                            <button class = "btn-editar-individual" (click) = "iniciarEdicaoApostador(palpite)"
+                                    title = "Editar">✏️
+                            </button>
+                            <button class = "btn-deletar-individual"
+                                    (click) = "excluirApostador(palpite.id, palpite.bettor_name)" title = "Excluir">🗑️
+                            </button>
+                          }
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            } @else {
+              <p class = "sem-apostadores">Nenhum palpite lançado para este confronto ainda.</p>
+            }
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+}

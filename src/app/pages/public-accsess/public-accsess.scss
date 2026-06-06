@@ -2,251 +2,236 @@
 {
   display: block;
   min-height: 100vh;
-  padding: 1.5rem 1rem;
-
+  padding: 2rem 1rem;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-
-  background: linear-gradient(
-      135deg,
-      #0f172a 0%,
-      #1e293b 100%
-  );
-
+  background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
   color: #f8fafc;
+  border-radius: 1rem;
 }
 
-*,
-*::before,
-*::after
+*, *::before, *::after
 {
   box-sizing: border-box;
+  color-scheme: dark;
 }
 
 .container
 {
-  max-width: 800px;
+  max-width: 850px;
   margin: 0 auto;
+  width: 100%;
+  padding: 1rem;
 }
 
 /* =========================
-   HEADER
+   HEADER (TELA PÚBLICA)
    ========================= */
-
 header
 {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 
   h1
   {
-    margin: 0 0 .5rem;
-
-    color: #38bdf8;
-
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    font-weight: 700;
-
-    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+    color: #f8fafc;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
     letter-spacing: 1px;
+
+    background: linear-gradient(135deg, #fff 0%, #a0b3cd 50%, #3a77c9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   p
   {
     margin: 0;
-    color: #94a3b8;
-    font-size: 1.05rem;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
   }
 }
 
 /* =========================
-   SELETOR
+   SELETOR DE JOGOS
    ========================= */
-
 .selector-box
 {
   background: #1e293b;
-
   border: 1px solid #334155;
   border-radius: 12px;
-
   padding: 1.25rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
 
   label
   {
     display: block;
-
-    margin-bottom: .75rem;
-
+    margin-bottom: 0.6rem;
     color: #94a3b8;
-    font-size: .95rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   select
   {
     width: 100%;
-
     background: #0f172a;
     color: #f8fafc;
-
     border: 1px solid #475569;
-    border-radius: 10px;
-
-    padding: .85rem 1rem;
-
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
     font-size: 1rem;
-
+    font-weight: 600;
     outline: none;
-  }
+    transition: 0.2s;
+    cursor: pointer;
 
-  select:focus
-  {
-    border-color: #38bdf8;
+    &:focus
+    {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+    }
   }
 }
 
 /* =========================
-   PLACAR OFICIAL
+   PLACAR OFICIAL CENTRAL
    ========================= */
-
 .placar-oficial-card
 {
   background: #1e293b;
-
   border: 1px solid #334155;
-  border-radius: 12px;
-
-  padding: 2rem 1.5rem;
-
+  border-radius: 14px;
+  padding: 2.2rem 1.5rem;
   margin-bottom: 1.5rem;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
 
+.placar-final
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.sigla-time
+{
+  color: #f8fafc;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+
+  &:first-of-type
+  {
+    text-align: right;
+    color: #38bdf8;
+  }
+
+  &:last-of-type
+  {
+    text-align: left;
+    color: #38bdf8;
+  }
+}
+
+.gols-numero
+{
+  min-width: 60px;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  padding: 0.5rem;
+  color: #fff;
   text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-weight: 800;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.versus
+{
+  color: #475569;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.confronto-container
+{
+  .badge-premio
+  {
+    font-size: 0.8rem;
+    color: #6ca8f0;
+  }
 }
 
 .placar-andamento
 {
   display: flex;
   flex-direction: column;
-
   align-items: center;
-  justify-content: center;
-
   gap: 1rem;
-
   width: 100%;
+
+  .confronto-resumo
+  {
+    color: #e2e8f0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
 }
 
-.confronto-resumo
+.badge-premio
 {
-  color: #38bdf8;
-
-  font-size: 2rem;
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  text-align: center;
+  font-size: clamp(0.8rem, 1vw, 1.5rem);
 }
 
 .badge-andamento
 {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-
-  padding: .7rem 1.2rem;
-
+  padding: 0.6rem 1.2rem;
   border-radius: 999px;
-
-  background: rgba(234, 179, 8, .15);
-  border: 1px solid rgba(234, 179, 8, .3);
-
-  color: #eab308;
-
-  font-size: 1rem;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgb(35, 118, 210);
+  color: #6ca8f0;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
-.placar-final
-{
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: .75rem;
-
-  width: 100%;
-}
-
-.sigla-time
-{
-  color: #38bdf8;
-
-  font-size: 1.8rem;
-  font-weight: 800;
-}
-
-.gols-numero
-{
-  min-width: 52px;
-
-  background: #0f172a;
-
-  border: 1px solid #475569;
-  border-radius: 10px;
-
-  padding: .35rem .9rem;
-
-  color: #38bdf8;
-
-  text-align: center;
-
-  font-size: 1.9rem;
-  font-weight: bold;
-}
-
-.versus
-{
-  color: #64748b;
-
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
 /* =========================
-   GANHADORES
+   BOX PREMIUM: GANHADORES
    ========================= */
-
 .ganhadores-card
 {
-  background: linear-gradient(
-      135deg,
-      #2e1065 0%,
-      #3b0764 100%
-  );
-
-  border: 1px solid rgba(168, 85, 247, .5);
-  border-radius: 12px;
-
+  background: linear-gradient(135deg, #2e1065 0%, #1e1b4b 100%);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 14px;
   padding: 1.5rem;
-
   text-align: center;
-
   margin-bottom: 1.5rem;
+  box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.15);
 
   h2
   {
     margin-top: 0;
-    margin-bottom: 1rem;
-
+    margin-bottom: 1.25rem;
     color: #f472b6;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 }
 
@@ -255,153 +240,133 @@ header
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .ganhador-badge
 {
-  display: inline-block;
-
-  padding: .5rem 1rem;
-
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.1rem;
   border-radius: 999px;
-
-  background: rgba(168, 85, 247, .2);
-  border: 1px solid rgba(168, 85, 247, .35);
-
-  color: #e9d5ff;
-  font-weight: 600;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #f3e8ff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nenhum
 {
   margin: 0;
-
-  color: #cbd5e1;
+  color: #94a3b8;
   font-style: italic;
+  font-size: 0.95rem;
 }
 
 /* =========================
-   TABELA
+   TABELA DE PALPITES
    ========================= */
-
 .table-container
 {
   background: #1e293b;
-
   border: 1px solid #334155;
-  border-radius: 12px;
-
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 
 table
 {
   width: 100%;
-
   border-collapse: collapse;
-  table-layout: fixed;
 }
 
 th
 {
   background: #0f172a;
-
   color: #38bdf8;
-
-  padding: 1rem;
-
+  padding: 1.1rem 1.25rem;
   text-align: left;
-
-  font-size: .95rem;
+  font-size: 0.85rem;
   font-weight: 700;
-
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #334155;
 }
 
 td
 {
-  padding: 1rem;
-
-  color: #cbd5e1;
-
+  padding: 1.1rem 1.25rem;
+  color: #e2e8f0;
   border-top: 1px solid #334155;
+  font-size: 1rem;
+  vertical-align: middle;
 }
 
-tbody tr:hover td
+tbody tr
 {
-  background: rgba(255, 255, 255, .03);
+  transition: 0.15s;
+
+  &:hover td
+  {
+    background: rgba(255, 255, 255, 0.02);
+  }
 }
 
-th:first-child,
-td:first-child
+tr th:first-child, tr td:first-child
 {
-  width: 70%;
+  width: 65%;
+  font-weight: 500;
 }
 
-th:last-child,
-td:last-child
+tr th:last-child, tr td:last-child
 {
-  width: 30%;
+  width: 35%;
   text-align: center;
 }
 
 .placar-apostado
 {
   display: inline-block;
-
-  background: rgba(52, 211, 153, .12);
-
-  padding: .3rem .8rem;
-
+  background: rgba(16, 185, 129, 0.12);
+  padding: 0.4rem 1rem;
   border-radius: 6px;
-
   color: #34d399;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1.05rem;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  min-width: 75px;
+  text-align: center;
 }
 
 /* =========================
-   RESPONSIVO
+   RESPONSIVIDADE (MOBILE)
    ========================= */
-
 @media (max-width: 768px)
 {
   :host
   {
-    padding: 1rem .75rem;
+    padding: 1.25rem 0.5rem;
   }
-
-  .container
+  .placar-oficial-card
   {
-    max-width: 100%;
+    padding: 1.5rem 1rem;
   }
-
-  .confronto-resumo
-  {
-    font-size: 1.5rem;
-  }
-
   .sigla-time
   {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
-
   .gols-numero
   {
-    min-width: 42px;
+    min-width: 48px;
     font-size: 1.5rem;
+    padding: 0.4rem;
   }
-
-  .badge-andamento
+  th, td
   {
-    width: 100%;
-    max-width: 260px;
-  }
-
-  th,
-  td
-  {
-    padding: .8rem;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
   }
 }

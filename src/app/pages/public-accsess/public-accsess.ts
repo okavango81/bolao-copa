@@ -1,53 +1,3 @@
-// import {Component, OnInit, OnDestroy, inject} from '@angular/core';
-// import {CommonModule} from '@angular/common';
-// import {Supabase} from '../../service/supabase' ; // Ajusta o caminho
-//
-// @Component({
-//   selector: 'app-public-accsess',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './public-accsess.html',
-//   styleUrl: './public-accsess.scss',
-// })
-// export class PublicAccsess implements OnInit, OnDestroy
-// {
-//   private supabaseService = inject(Supabase);
-//
-//   // Link direto para o Signal do serviço
-//   public listaDePalpites = this.supabaseService.listOfGuesss;
-//
-//   // Guardamos a referência do temporizador para o conseguir desligar depois
-//   private pollingInterval: any;
-//
-//   async ngOnInit()
-//   {
-//     // 1. Faz a primeira busca imediatamente ao carregar a página
-//     await this.supabaseService.findGuess();
-//
-//     // 2. Cria um loop automático que roda a cada 3 segundos (3000 milissegundos)
-//     // Ele vai ao banco de dados em segundo plano, atualiza o Signal e o HTML muda sozinho!
-//     this.pollingInterval = setInterval(async () =>
-//     {
-//       try
-//       {
-//         await this.supabaseService.findGuess();
-//         console.log('Lista pública atualizada via Polling automática!');
-//       } catch (error)
-//       {
-//         console.error('Erro no polling ao buscar palpites:', error);
-//       }
-//     }, 5000); // Se quiseres mais rápido, podes mudar para 2000 (2 segundos)
-//   }
-//
-//   ngOnDestroy()
-//   {
-//     // 3. Muito importante: destrói o loop se o utilizador sair da página pública
-//     if (this.pollingInterval)
-//     {
-//       clearInterval(this.pollingInterval);
-//     }
-//   }
-// }
 import {Component, inject, computed} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Supabase} from '../../service/supabase';
@@ -144,4 +94,14 @@ export class PublicAccsess
   {
     return nome.substring(0, 3).toUpperCase();
   }
+
+  premioTotal = computed(() => {
+    const jogoAtual = this.supabaseService.activeMatch(); // O jogo selecionado na tela
+    const palpites = this.supabaseService.guesses()// Lista de palpites filtrada por esse jogo
+
+    if (!jogoAtual || !palpites) return 0;
+
+    // Multiplica o valor individual cadastrado na partida pelo total de participantes
+    return (jogoAtual.bet_value || 0) * palpites.length;
+  });
 }
